@@ -1,11 +1,11 @@
-import { isBuiltin } from "node:module";
-import { defineConfig } from "tsdown";
+import { isBuiltin } from 'node:module';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig({
-  entry: { server: "src/index.ts" },
-  platform: "node",
-  target: "node22.18",
-  format: "esm",
+  entry: { server: 'src/index.ts' },
+  platform: 'node',
+  target: 'node22.18',
+  format: 'esm',
   clean: true,
   hash: false,
   outputOptions: {
@@ -13,7 +13,6 @@ export default defineConfig({
   },
   deps: {
     onlyBundle: false,
-    alwaysBundle: (id) =>
-      !isBuiltin(id),
+    alwaysBundle: (id) => !isBuiltin(id),
   },
 });

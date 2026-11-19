@@ -1,34 +1,34 @@
-import { node } from "@elysia/node";
-import { Elysia } from "elysia";
+import { node } from '@elysia/node';
+import { Elysia } from 'elysia';
 
-import { listUsers } from "./prisma/users";
+import { listUsers } from './prisma/users';
 
-const rawPort = (process.env.PORT ?? "").trim();
+const rawPort = (process.env.PORT ?? '').trim();
 const parsedPort = rawPort.length > 0 ? Number(rawPort) : Number.NaN;
 const port =
   Number.isInteger(parsedPort) && parsedPort >= 0 && parsedPort <= 65535 ? parsedPort : 3000;
 
-const app = new Elysia({ adapter: "Bun" in globalThis ? undefined : node() })
-  .get("/", () => {
+const app = new Elysia({ adapter: 'Bun' in globalThis ? undefined : node() })
+  .get('/', () => {
     return {
-      message: "hello from create-prisma + elysia",
+      message: 'hello from create-prisma + elysia',
     };
   })
 
-  .get("/users", async ({ set }) => {
+  .get('/users', async ({ set }) => {
     const users = await listUsers(10).catch((error: unknown) => {
-      console.error("Failed to query users:", error);
+      console.error('Failed to query users:', error);
       return undefined;
     });
 
     if (!users) {
       set.status = 500;
-      return { error: "Could not query users. Check the server log for the error." };
+      return { error: 'Could not query users. Check the server log for the error.' };
     }
 
     return users;
   })
 
-  .listen({ port, hostname: "0.0.0.0" });
+  .listen({ port, hostname: '0.0.0.0' });
 
 console.log(`Server running at http://localhost:${app.server?.port ?? port}`);

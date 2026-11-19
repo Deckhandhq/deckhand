@@ -20,7 +20,6 @@ The deploy script builds the framework output, provisions Prisma Postgres when s
 
 The starter users are inserted idempotently from `src/prisma/seed.ts` on the first database query through the Composer service binding.
 
-
 ## Prisma
 
 - Contract: `src/prisma/contract.prisma`
