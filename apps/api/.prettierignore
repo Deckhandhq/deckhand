@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+src/prisma/contract.json
+src/prisma/contract.d.ts
+src/prisma/generated/
+migrations/app/
+migrations/snapshots/
