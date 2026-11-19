@@ -1,0 +1,15 @@
+node_modules
+**/node_modules/**
+.svelte-kit
+**/.svelte-kit/**
+build
+**/build/**
+dist
+**/dist/**
+coverage
+**/coverage/**
+bun.lock
+apps/api/src/prisma/contract.json
+apps/api/src/prisma/contract.d.ts
+apps/api/migrations/app/**
+apps/api/migrations/snapshots/**

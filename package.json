@@ -1,0 +1,22 @@
+{
+  "name": "dekhand",
+  "private": true,
+  "type": "module",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "bun run --parallel --filter '@dekhand/api' --filter '@dekhand/web' dev",
+    "dev:api": "bun run --filter '@dekhand/api' dev",
+    "dev:web": "bun run --filter '@dekhand/web' dev",
+    "start:all": "bun scripts/start-all.ts",
+    "build": "bun run build:api && bun run build:web",
+    "build:api": "bun run --filter '@dekhand/api' build",
+    "build:web": "cd apps/web && bun --bun run build",
+    "check": "bun run check:api && bun run check:web",
+    "check:api": "bun run --filter '@dekhand/api' check",
+    "check:web": "bun run --filter '@dekhand/web' check",
+    "test": "bun run --parallel --filter '@dekhand/api' --filter '@dekhand/web' test",
+    "lint": "bun run --parallel --filter '@dekhand/api' --filter '@dekhand/web' lint",
+    "format": "bun run --parallel --filter '@dekhand/api' --filter '@dekhand/web' format",
+    "format:check": "bun run --parallel --filter '@dekhand/api' --filter '@dekhand/web' format:check"
+  }
+}

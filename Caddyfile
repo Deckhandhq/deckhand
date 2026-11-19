@@ -1,0 +1,12 @@
+{$DEKHAND_DOMAIN} {
+	encode gzip
+
+	# API first: prevents /api from being captured by the web catch-all.
+	handle /api/* {
+		reverse_proxy api:3000
+	}
+
+	handle {
+		reverse_proxy web:3000
+	}
+}
