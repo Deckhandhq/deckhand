@@ -16,9 +16,9 @@ Prerequisites: a Linux VPS with Docker + Compose, a domain pointing to it, ports
 
 ```bash
 mkdir deckhand && cd deckhand
-curl -fsSLO https://raw.githubusercontent.com/epitexam/deckhand/main/docker-compose.yml
-curl -fsSLO https://raw.githubusercontent.com/epitexam/deckhand/main/.env.example
-curl -fsSLO https://raw.githubusercontent.com/epitexam/deckhand/main/Caddyfile
+curl -fsSLO https://raw.githubusercontent.com/Deckhandhq/deckhand/main/docker-compose.yml
+curl -fsSLO https://raw.githubusercontent.com/Deckhandhq/deckhand/main/.env.example
+curl -fsSLO https://raw.githubusercontent.com/Deckhandhq/deckhand/main/Caddyfile
 cp .env.example .env
 $EDITOR .env      # DOMAIN, POSTGRES_PASSWORD, DOCKERHUB_USER, DECKHAND_VERSION
 docker compose up -d
