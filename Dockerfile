@@ -12,8 +12,9 @@ RUN bun install --frozen-lockfile
 # 2. Génération et builds
 FROM deps AS build
 COPY . .
+# L'API est exécutée depuis sa source TypeScript (`bun src/index.ts`) :
+# pas de `--compile` ici, afin de garder une image multi-arch.
 RUN bun run --filter @deckhand/database db:generate \
- && bun run --filter @deckhand/api build \
  && bun run --filter @deckhand/web build
 
 # 3. API : Bun + Prisma CLI pour `migrate deploy` au démarrage

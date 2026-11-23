@@ -3,54 +3,74 @@ services:
     image: postgres:17-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_DB: deckhand
-      POSTGRES_USER: deckhand
-      POSTGRES_PASSWORD: deckhand
+      POSTGRES_DB: ${POSTGRES_DB:-deckhand}
+      POSTGRES_USER: ${POSTGRES_USER:-deckhand}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-deckhand}
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U deckhand -d deckhand"]
+      test:
+        - CMD-SHELL
+        - pg_isready -U ${POSTGRES_USER:-deckhand} -d ${POSTGRES_DB:-deckhand}
       interval: 5s
       timeout: 3s
       retries: 10
 
   api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: api
+    image: ${DOCKERHUB_USER:-epitexam}/deckhand-api:${DECKHAND_VERSION:-latest}
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql://deckhand:deckhand@postgres:5432/deckhand?schema=public
+      DATABASE_URL: postgresql://${POSTGRES_USER:-deckhand}:${POSTGRES_PASSWORD:-deckhand}@postgres:5432/${POSTGRES_DB:-deckhand}?schema=public
       NODE_ENV: production
       PORT: 3000
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost}
+      CORS_ORIGIN: ${CORS_ORIGIN:-https://localhost}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL:-https://localhost}
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - bun
+        - -e
+        - "fetch('http://localhost:3000/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: web
+    image: ${DOCKERHUB_USER:-epitexam}/deckhand-web:${DECKHAND_VERSION:-latest}
     restart: unless-stopped
     environment:
       HOST: 0.0.0.0
       PORT: 3000
-      ORIGIN: ${ORIGIN:-http://localhost}
+      ORIGIN: ${ORIGIN:-https://localhost}
       API_INTERNAL_URL: http://api:3000
       PROTOCOL_HEADER: x-forwarded-proto
       HOST_HEADER: x-forwarded-host
     depends_on:
-      - api
+      api:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - bun
+        - -e
+        - "fetch('http://localhost:3000/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
-    profiles: ["proxy"]
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
     ports:
       - "80:80"
       - "443:443"
@@ -59,8 +79,10 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
-      - api
-      - web
+      api:
+        condition: service_healthy
+      web:
+        condition: service_healthy
 
 volumes:
   postgres_data:
