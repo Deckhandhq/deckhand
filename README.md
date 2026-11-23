@@ -1,6 +1,6 @@
 # Deckhand
 
-> A self-hostable, end-to-end typed stack built entirely with Bun.
+> A forum you can host yourself, typed from database to browser, built entirely with Bun.
 
 [![CI](https://github.com/Deckhandhq/deckhand/actions/workflows/ci.yml/badge.svg)](https://github.com/Deckhandhq/deckhand/actions/workflows/ci.yml)
 [![Docker](https://github.com/Deckhandhq/deckhand/actions/workflows/docker.yml/badge.svg)](https://github.com/Deckhandhq/deckhand/actions/workflows/docker.yml)
@@ -10,7 +10,7 @@
 ![SvelteKit](https://img.shields.io/badge/SvelteKit-3-ff3e00?logo=svelte)
 [![Docker Hub](https://img.shields.io/badge/Docker%20Hub-epitexam%2Fdeckhand-2496ED?logo=docker)](https://hub.docker.com/u/epitexam)
 
-Deckhand pairs a **modular Elysia + Prisma backend** with a **SvelteKit frontend**. It is published as multi-arch Docker images, so running it on a VPS only requires Docker. In-depth guides live in the [documentation site](https://deckhandhq.github.io/deckhand-docs/).
+Deckhand is a forum you can host yourself, pairing a **modular Elysia + Prisma backend** with a **SvelteKit frontend**. It is published as multi-arch Docker images, so running it on a VPS only requires Docker. In-depth guides live in the [documentation site](https://deckhandhq.github.io/deckhand-docs/).
 
 ## Stack
 
@@ -24,6 +24,7 @@ Deckhand pairs a **modular Elysia + Prisma backend** with a **SvelteKit frontend
 
 ## Highlights
 
+- **Forum first**: a discussion board you can run on your own infrastructure.
 - **Modular monolith** — Elysia plugins with explicit dependencies and isolated lifecycles.
 - **End-to-end types** — Eden Treaty infers the API from `type App`; no code generation.
 - **Schema-driven validation** — Prismabox turns the Prisma schema into TypeBox models reused by Elysia, OpenAPI and Eden.
@@ -82,13 +83,9 @@ Caddy is optional: `docker compose --profile proxy up -d` enables the recommende
 
 Full prerequisites, configuration and operations are in the [documentation site](https://deckhandhq.github.io/deckhand-docs/). Developers can jump to [`AGENTS.md`](AGENTS.md) for local commands and conventions.
 
-## Releases
-
-Pushing a `v*` tag publishes `epitexam/deckhand-api` and `epitexam/deckhand-web` to Docker Hub for `amd64` and `arm64`, creates a GitHub Release with the stack files, and runs a smoke test against the published images.
-
 ## Roadmap
 
 - [ ] Better Auth on the API with the Prisma adapter
-- [ ] A first real domain module
+- [ ] Forum module: threads, posts and moderation
 - [ ] Playwright and Storybook checks in CI
 - [ ] OpenTelemetry observability
