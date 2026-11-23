@@ -8,7 +8,6 @@
 		"#lib/*": "./src/lib/*"
 	},
 	"dependencies": {
-		"@deckhand/api": "workspace:*",
 		"@elysia/eden": "catalog:"
 	},
 	"scripts": {
@@ -28,6 +27,7 @@
 		"build-storybook": "storybook build"
 	},
 	"devDependencies": {
+		"@deckhand/api": "workspace:*",
 		"@eslint/js": "^10.0.1",
 		"@playwright/test": "^1.65.1",
 		"@sveltejs/adapter-bun": "^1.0.1",
@@ -63,8 +63,8 @@
 		"vitest-browser-svelte": "^3.1.0",
 		"storybook": "^10.6.8",
 		"@storybook/sveltekit": "^10.6.8",
-		"@storybook/addon-svelte-csf": "latest",
-		"@chromatic-com/storybook": "latest",
+		"@storybook/addon-svelte-csf": "5.1.6",
+		"@chromatic-com/storybook": "5.6.0",
 		"@storybook/addon-vitest": "^10.6.8",
 		"@storybook/addon-a11y": "^10.6.8",
 		"@storybook/addon-docs": "^10.6.8",

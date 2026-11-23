@@ -16,9 +16,8 @@ Prerequisites: a Linux VPS with Docker + Compose, a domain pointing to it, ports
 
 ```bash
 mkdir deckhand && cd deckhand
-curl -fsSLO https://raw.githubusercontent.com/Deckhandhq/deckhand/main/docker-compose.yml
-curl -fsSLO https://raw.githubusercontent.com/Deckhandhq/deckhand/main/.env.example
-curl -fsSLO https://raw.githubusercontent.com/Deckhandhq/deckhand/main/Caddyfile
+BASE=https://github.com/Deckhandhq/deckhand/releases/latest/download
+for f in docker-compose.yml .env.example Caddyfile; do curl -fsSLO "$BASE/$f"; done
 cp .env.example .env
 $EDITOR .env      # DOMAIN, POSTGRES_PASSWORD, DOCKERHUB_USER, DECKHAND_VERSION
 docker compose up -d
@@ -36,7 +35,7 @@ docker compose pull && docker compose up -d   # update to the latest tag
 docker compose exec -T postgres pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB" > backup.sql
 ```
 
-Do not roll back to an older image after a destructive migration without a database backup.
+See `docs/DEPLOYMENT.md` for firewall, backup scripts, monitoring and rollback details. Do not roll back to an older image after a destructive migration without a database backup.
 
 ## Publish a new version (maintainers)
 

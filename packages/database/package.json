@@ -15,13 +15,13 @@
   "dependencies": {
     "@prisma/adapter-pg": "catalog:",
     "@prisma/client": "catalog:",
+    "dotenv": "18.0.10",
     "elysia": "catalog:",
-    "pg": "8.23.1"
+    "pg": "8.23.1",
+    "prisma": "catalog:"
   },
   "devDependencies": {
     "@types/pg": "8.23.1",
-    "dotenv": "18.0.10",
-    "prisma": "catalog:",
     "prismabox": "1.1.26"
   }
 }

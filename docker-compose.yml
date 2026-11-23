@@ -17,10 +17,25 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   api:
     image: ${DOCKERHUB_USER:-epitexam}/deckhand-api:${DECKHAND_VERSION:-latest}
     restart: unless-stopped
+    init: true
+    cpus: ${API_CPUS:-1.0}
+    mem_limit: ${API_MEM:-512m}
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-deckhand}:${POSTGRES_PASSWORD:-deckhand}@postgres:5432/${POSTGRES_DB:-deckhand}?schema=public
       NODE_ENV: production
@@ -45,6 +60,16 @@ services:
   web:
     image: ${DOCKERHUB_USER:-epitexam}/deckhand-web:${DECKHAND_VERSION:-latest}
     restart: unless-stopped
+    init: true
+    cpus: ${WEB_CPUS:-1.0}
+    mem_limit: ${WEB_MEM:-512m}
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     environment:
       HOST: 0.0.0.0
       PORT: 3000
@@ -69,6 +94,14 @@ services:
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     environment:
       DOMAIN: ${DOMAIN:-localhost}
     ports:
