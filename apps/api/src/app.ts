@@ -6,8 +6,8 @@ import { health } from "./modules/health";
 import { errors } from "./plugins/errors";
 
 /**
- * Application sans `listen` : réutilisable par le serveur, les tests
- * (`treaty(app)`) et le typage du front (`type App`).
+ * App without `listen`: reusable by the server, tests
+ * (`treaty(app)`) and frontend typing (`type App`).
  */
 export const app = new Elysia()
   .use(errors)
@@ -17,7 +17,7 @@ export const app = new Elysia()
         info: {
           title: "Deckhand API",
           version: "0.1.0",
-          description: "API du monorepo Deckhand.",
+          description: "Deckhand monorepo API.",
         },
       },
     }),
@@ -25,7 +25,7 @@ export const app = new Elysia()
   .use(
     llms({
       source: { type: "url", url: "/openapi/json" },
-      header: "# Deckhand API\n\nDocumentation générée depuis OpenAPI.",
+      header: "# Deckhand API\n\nDocumentation generated from OpenAPI.",
       cache: { enabled: true },
     }),
   )

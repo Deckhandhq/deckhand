@@ -66,4 +66,4 @@ To roll back, restore the previous image tag in the compose file and recreate th
 - Logs: `docker compose logs -f api web`.
 - Verify containers: `docker compose ps`.
 - If TLS fails: confirm DNS, open ports 80/443, and that `DOMAIN` in the compose file matches the public hostname.
-- If the page shows `API : unavailable`, inspect `docker compose logs api` and the `API_INTERNAL_URL` path (`web` → `api:3000`).
+- If the page shows `API: unavailable`, inspect `docker compose logs api` and the `API_INTERNAL_URL` path (`web` → `api:3000`).

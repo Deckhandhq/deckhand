@@ -15,7 +15,7 @@ datasource db {
   provider = "postgresql"
 }
 
-// Socle minimal, aligné avec le futur modèle Better Auth.
+// Minimal foundation, aligned with the future Better Auth model.
 model User {
   id            String   @id @default(cuid())
   name          String

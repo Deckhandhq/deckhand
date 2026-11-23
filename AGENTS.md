@@ -1,38 +1,105 @@
-# Deckhand — instructions pour agents
+# Deckhand — Agent Instructions
 
-Monorepo 100 % Bun : API Elysia + Prisma, front SvelteKit, PostgreSQL self-hosté.
+A 100% Bun monorepo: Elysia + Prisma API, SvelteKit frontend, self-hosted PostgreSQL.
 
-## Commandes (toujours via Bun)
+---
 
-- `bun install` — installer tous les workspaces (lockfile : `bun.lock`)
-- `bun run dev` — API + web en parallèle (`predev` régénère le client Prisma)
-- `bun run build`, `bun run start`
-- `bun run db:generate`, `db:migrate`, `db:deploy`, `db:seed`, `studio`
-- `bun test`, `bun run typecheck`, `bun run fmt` / `fmt:check`
-- `bun run --filter @deckhand/api ...`, `bun run --filter @deckhand/web ...`
+## Commands
 
-## Règles d'architecture
+Always run commands through Bun.
 
-- **2 services** : `@deckhand/api` (port 3000) et `@deckhand/web` (port 5173). Le web appelle l'API via `/api` (proxy Vite en dev, reverse proxy en prod) : same-origin, pas de CORS à gérer côté navigateur.
-- **Client typé** : `@deckhand/api` exporte `type App` depuis `src/app.ts` (jamais depuis `index.ts`, qui appelle `.listen()`). Le web utilise `treaty<App>` depuis `@elysia/eden` avec `fetcher`/`headers` fournis par SvelteKit. Versions d'Elysia alignées par le catalog.
-- **Elysia** : un module = `new Elysia({ name, prefix })` avec dépendances explicites `.use()`. Lifecycle isolé par défaut ; `.as('scoped')` uniquement pour l'auth. Validation via schémas Prismabox/TypeBox, jamais de types seuls. Toujours chaîner les méthodes (nécessaire pour l'inférence Eden).
-- **Prisma 7** : schéma dans `packages/database/prisma`, générateurs `prisma-client` + `prismabox`, driver adapter `@prisma/adapter-pg`, `DATABASE_URL` configuré dans `prisma.config.ts`. Utiliser `bunx --bun prisma ...`.
-- **Auth (plus tard)** : Better Auth côté API avec `@better-auth/prisma-adapter` et `auth.handler` monté via `.mount('/api/auth', ...)`. Ne pas utiliser le add-on `sv better-auth` (Drizzle).
-- **Projet clean** : pas de starter, pas de code de démo. Nouveaux modules = dossiers vides avec uniquement le nécessaire.
+| Command                             | Description                                                        |
+| ----------------------------------- | ------------------------------------------------------------------ |
+| `bun install`                       | Install all workspaces (lockfile: `bun.lock`)                      |
+| `bun run dev`                       | Run API + web in parallel (`predev` regenerates the Prisma client) |
+| `bun run build` / `bun run start`   | Build / start the project                                          |
+| `bun run db:generate`               | Generate the Prisma client                                         |
+| `bun run db:migrate`                | Create and apply a migration                                       |
+| `bun run db:deploy`                 | Apply pending migrations                                           |
+| `bun run db:seed`                   | Seed the database                                                  |
+| `bun run studio`                    | Open Prisma Studio                                                 |
+| `bun test`                          | Run the test suite                                                 |
+| `bun run typecheck`                 | Run TypeScript checks                                              |
+| `bun run fmt` / `bun run fmt:check` | Format code / check formatting                                     |
 
-## Documentation à consulter (préférer les variantes `.md` / llms.txt)
+To target a single service, use the workspace filter:
 
-- Bun : https://bun.com/llms.txt
-- Elysia : https://elysiajs.com/llms.txt (pages `.md`, ex. `https://elysiajs.com/eden/treaty/config.md`)
-- Prisma v7 : https://www.prisma.io/docs/llms/orm-v7.txt (pages `.md`, toujours vérifier https://www.prisma.io/changelog.md)
-- Svelte / SvelteKit : MCP `svelte` configuré via `@sveltejs/opencode` (https://svelte.dev/docs/ai/overview), sinon https://svelte.dev/docs/kit/llms.txt
+```sh
+bun run --filter @deckhand/api <command>
+bun run --filter @deckhand/web <command>
+```
 
-## Outils agentiques disponibles
+---
 
-- MCP Svelte (docs + `svelte-autofixer`), skills et sous-agent `svelte-file-editor` via le plugin OpenCode `@sveltejs/opencode` (config `apps/web/.opencode/svelte.json`, skills activés par défaut).
-- Skill optionnel `svelte-mcp-feedback` installé dans `apps/web/.opencode/skills/`.
-- MCP Prisma configuré dans `opencode.json` (`https://mcp.prisma.io/mcp`) : se connecter via `/mcps`.
-- MCP Vite/Svelte DevTools configuré en local (`bunx @sveltejs/vite-devtools-svelte mcp`), proposé par le add-on `devtools`.
-- Les **11 skills Prisma** du registre sont installés dans `.agents/skills/` (`bunx skills add prisma/skills -y`) : `prisma-cli`, `prisma-client-api`, `prisma-compute`, `prisma-database-setup`, `prisma-driver-adapter-implementation`, `prisma-mongodb-upgrade`, `prisma-orm-setup`, `prisma-postgres`, `prisma-postgres-setup`, `prisma-postgres-upgrade`, `prisma-upgrade-v7`.
-- Les **skills Svelte officiels** sont également présents dans `.agents/skills/` (`bunx skills add sveltejs/ai-tools --skill ... -y`) : `svelte-code-writer`, `svelte-core-bestpractices`, `svelte-mcp-feedback`. Le plugin `@sveltejs/opencode` les fournit aussi et les maintient à jour, avec le sous-agent `svelte-file-editor`.
-- L'API expose `/openapi` (Scalar) et `/llms.txt` généré depuis OpenAPI pour les agents.
+## Architecture Rules
+
+### Services
+
+- Two services: `@deckhand/api` (port `3000`) and `@deckhand/web` (port `5173`).
+- The web app calls the API through `/api` (Vite proxy in dev, reverse proxy in prod).
+- This is same-origin — no browser-side CORS handling needed.
+
+### Typed client
+
+- `@deckhand/api` exports `type App` from `src/app.ts` — **never** from `index.ts`, which calls `.listen()`.
+- The web app uses `treaty<App>` from `@elysia/eden`, with `fetcher`/`headers` provided by SvelteKit.
+- Elysia versions are kept in sync via the catalog.
+
+### Elysia
+
+- One module = `new Elysia({ name, prefix })` with explicit `.use()` dependencies.
+- Lifecycle is scoped by default; use `.as('scoped')` only for auth.
+- Validate with Prismabox/TypeBox schemas — never with types alone.
+- Always chain methods (required for Eden type inference).
+
+### Prisma 7
+
+- Schema lives in `packages/database/prisma`.
+- Generators: `prisma-client` + `prismabox`.
+- Driver adapter: `@prisma/adapter-pg`.
+- `DATABASE_URL` is configured in `prisma.config.ts`.
+- Run CLI commands with `bunx --bun prisma ...`.
+
+### Auth (planned)
+
+- Better Auth on the API side, with `@better-auth/prisma-adapter`.
+- Mount `auth.handler` via `.mount('/api/auth', ...)`.
+- Do **not** use the `sv better-auth` add-on (it uses Drizzle).
+
+### Clean project
+
+- No starter code, no demo code.
+- New modules = empty folders containing only what is necessary.
+
+---
+
+## Documentation
+
+Prefer `.md` pages and `llms.txt` variants over HTML pages.
+
+| Topic              | Resource                                                                                                                    |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| Bun                | https://bun.com/llms.txt                                                                                                    |
+| Elysia             | https://elysiajs.com/llms.txt (`.md` pages, e.g. `https://elysiajs.com/eden/treaty/config.md`)                              |
+| Prisma v7          | https://www.prisma.io/docs/llms/orm-v7.txt (`.md` pages; always check https://www.prisma.io/changelog.md)                   |
+| Svelte / SvelteKit | `svelte` MCP via `@sveltejs/opencode` (https://svelte.dev/docs/ai/overview), otherwise https://svelte.dev/docs/kit/llms.txt |
+
+---
+
+## Available Agent Tooling
+
+### MCP & plugins
+
+- **Svelte MCP** (docs + `svelte-autofixer`), skills, and the `svelte-file-editor` subagent via the `@sveltejs/opencode` OpenCode plugin (config: `apps/web/.opencode/svelte.json`, skills enabled by default).
+- Optional `svelte-mcp-feedback` skill in `apps/web/.opencode/skills/`.
+- **Prisma MCP** configured in `opencode.json` (`https://mcp.prisma.io/mcp`) — connect via `/mcps`.
+- **Vite/Svelte DevTools MCP** configured locally (`bunx @sveltejs/vite-devtools-svelte mcp`), provided by the `devtools` add-on.
+
+### Skills in `.agents/skills/`
+
+- **11 Prisma skills** (installed with `bunx skills add prisma/skills -y`): `prisma-cli`, `prisma-client-api`, `prisma-compute`, `prisma-database-setup`, `prisma-driver-adapter-implementation`, `prisma-mongodb-upgrade`, `prisma-orm-setup`, `prisma-postgres`, `prisma-postgres-setup`, `prisma-postgres-upgrade`, `prisma-upgrade-v7`.
+- **Official Svelte skills** (installed with `bunx skills add sveltejs/ai-tools --skill ... -y`): `svelte-code-writer`, `svelte-core-bestpractices`, `svelte-mcp-feedback`. Also provided and kept up to date by the `@sveltejs/opencode` plugin, along with the `svelte-file-editor` subagent.
+
+### API
+
+- The API exposes `/openapi` (Scalar) and `/llms.txt` generated from OpenAPI for agents.

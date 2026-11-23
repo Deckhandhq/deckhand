@@ -2,8 +2,8 @@ import { createApiClient } from '../lib/api/client';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, request, url }) => {
-	// En production, le serveur web appelle directement le service api du
-	// réseau Docker ; le navigateur, lui, passe par l'origine publique /api.
+	// In production, the web server calls the api service directly on the
+	// Docker network; the browser goes through the public /api origin.
 	const internalUrl = process.env.API_INTERNAL_URL;
 
 	const api = createApiClient({

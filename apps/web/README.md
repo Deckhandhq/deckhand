@@ -1,5 +1,5 @@
 # @deckhand/web
 
-Frontend SvelteKit 3 du monorepo Deckhand. Voir le [README racine](../../README.md) pour le démarrage, le self-hosting et les conventions.
+SvelteKit 3 frontend of the Deckhand monorepo. See the [root README](../../README.md) for getting started, self-hosting and conventions.
 
-Le client Eden typé se trouve dans `src/lib/api/client.ts` ; il consomme `type App` exporté par `@deckhand/api/app`.
+The typed Eden client lives in `src/lib/api/client.ts`; it consumes the `type App` exported by `@deckhand/api/app`.

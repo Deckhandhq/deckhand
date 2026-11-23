@@ -1,9 +1,9 @@
 import { config } from "dotenv";
 import { defineConfig } from "prisma/config";
 
-// Le CLI Prisma (via bunx) ne charge pas automatiquement le .env racine.
-// Le chemin explicite ; les variables déjà présentes dans l'environnement
-// (Docker Compose, CI) ne sont pas écrasées.
+// The Prisma CLI (via bunx) does not automatically load the root .env.
+// The explicit path; variables already present in the environment
+// (Docker Compose, CI) are not overridden.
 config({ path: new URL("../../.env", import.meta.url).pathname });
 
 export default defineConfig({
@@ -13,8 +13,8 @@ export default defineConfig({
     seed: "bun prisma/seed.ts",
   },
   datasource: {
-    // process.env direct plutôt que env() : `prisma generate` doit fonctionner
-    // même sans DATABASE_URL (CI, installation).
+    // Direct process.env rather than env(): `prisma generate` must work
+    // even without DATABASE_URL (CI, installation).
     url: process.env.DATABASE_URL ?? "",
   },
 });

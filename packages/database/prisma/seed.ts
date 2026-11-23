@@ -1,7 +1,7 @@
 import { prisma } from "../src/client";
 
 async function main() {
-  // Point d'entrée pour les données de référence. Aucune donnée de démo.
+  // Entry point for reference data. No demo data.
   void prisma;
 }
 

@@ -4,13 +4,13 @@ import { treaty } from '@elysia/eden';
 type FetchLike = (input: string | URL, init?: RequestInit) => Promise<Response>;
 
 export type ApiClientOptions = {
-	/** Origine de l'API : publique pour le navigateur, interne pour le SSR. */
+	/** API origin: public for the browser, internal for SSR. */
 	baseUrl: string;
-	/** `event.fetch` côté serveur pour conserver les cookies. */
+	/** Server-side `event.fetch` to preserve cookies. */
 	fetch?: FetchLike;
-	/** Cookie transmis lors du rendu serveur. */
+	/** Cookie sent during server rendering. */
 	cookie?: string | null;
-	/** Préfixe ajouté au chemin (='/api' derrière le reverse proxy, '' en interne). */
+	/** Prefix added to the path ('/api' behind the reverse proxy, '' internally). */
 	prefix?: string;
 };
 
@@ -23,9 +23,9 @@ const rewriteFetcher = (doFetch: FetchLike, prefix: string) =>
 	}) as typeof fetch;
 
 /**
- * Client Eden typé par `App`. Le préfixe `/api` est ajouté côté navigateur
- * (proxy Vite en dev, reverse proxy en prod) ; le SSR peut viser l'API
- * directement via `API_INTERNAL_URL` sans passer par TLS public.
+ * Eden client typed by `App`. The `/api` prefix is added on the browser side
+ * (Vite proxy in dev, reverse proxy in prod); SSR can reach the API
+ * directly via `API_INTERNAL_URL` without going through public TLS.
  */
 export function createApiClient({
 	baseUrl,
