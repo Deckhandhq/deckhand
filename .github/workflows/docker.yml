@@ -86,14 +86,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
-          files: |
-            docker-compose.yml
-            .env.example
-            Caddyfile
-            docs/DEPLOYMENT.md
-            scripts/backup.sh
-            scripts/restore.sh
-            scripts/update.sh
+          files: docker-compose.yml
 
   smoke:
     needs: publish
@@ -108,17 +101,18 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.value }}
         run: |
-          sed -i 's/"80:80"/"8080:80"/; s/"443:443"/"8443:443"/; s/127.0.0.1:5432:5432/127.0.0.1:15432:5432/' docker-compose.yml
-          cp .env.example .env
           sed -i \
-            -e 's|^DOMAIN=.*|DOMAIN=localhost|' \
-            -e 's|^ORIGIN=.*|ORIGIN=https://localhost:8443|' \
-            -e 's|^POSTGRES_PASSWORD=.*|POSTGRES_PASSWORD=change-me|' \
-            -e 's|^DATABASE_URL=.*|DATABASE_URL="postgresql://deckhand:change-me@localhost:15432/deckhand?schema=public"|' \
-            -e "s|^DECKHAND_VERSION=.*|DECKHAND_VERSION=$VERSION|" \
-            .env
+            -e 's/"80:80"/"8080:80"/' \
+            -e 's/"443:443"/"8443:443"/' \
+            -e 's/127.0.0.1:5432:5432/127.0.0.1:15432:5432/' \
+            -e "s|epitexam/deckhand-api:0.1.2|epitexam/deckhand-api:$VERSION|" \
+            -e "s|epitexam/deckhand-web:0.1.2|epitexam/deckhand-web:$VERSION|" \
+            -e 's|DOMAIN: example.com|DOMAIN: localhost|' \
+            -e 's|ORIGIN: https://example.com|ORIGIN: https://localhost:8443|' \
+            -e 's|BETTER_AUTH_URL: https://example.com|BETTER_AUTH_URL: https://localhost:8443|' \
+            docker-compose.yml
       - name: Start stack from published images
-        run: docker compose up -d
+        run: docker compose --profile proxy up -d
       - name: Wait for health
         run: |
           for i in $(seq 1 30); do

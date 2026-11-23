@@ -1,11 +1,17 @@
+# Deckhand — single-file stack
+# Edit every `change-me` below and set ORIGIN / DOMAIN to your public URL.
+#
+#   docker compose up -d                   # core only — bring your own proxy
+#   docker compose --profile proxy up -d   # with Caddy (recommended)
+
 services:
   postgres:
     image: postgres:17-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-deckhand}
-      POSTGRES_USER: ${POSTGRES_USER:-deckhand}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-deckhand}
+      POSTGRES_DB: deckhand
+      POSTGRES_USER: deckhand
+      POSTGRES_PASSWORD: change-me
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
@@ -13,7 +19,7 @@ services:
     healthcheck:
       test:
         - CMD-SHELL
-        - pg_isready -U ${POSTGRES_USER:-deckhand} -d ${POSTGRES_DB:-deckhand}
+        - pg_isready -U deckhand -d deckhand
       interval: 5s
       timeout: 3s
       retries: 10
@@ -24,11 +30,11 @@ services:
         max-file: "3"
 
   api:
-    image: ${DOCKERHUB_USER:-epitexam}/deckhand-api:${DECKHAND_VERSION:-latest}
+    image: epitexam/deckhand-api:0.1.2
     restart: unless-stopped
     init: true
-    cpus: ${API_CPUS:-1.0}
-    mem_limit: ${API_MEM:-512m}
+    cpus: 1.0
+    mem_limit: 512m
     security_opt:
       - no-new-privileges:true
     logging:
@@ -37,12 +43,13 @@ services:
         max-size: "10m"
         max-file: "3"
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-deckhand}:${POSTGRES_PASSWORD:-deckhand}@postgres:5432/${POSTGRES_DB:-deckhand}?schema=public
+      DATABASE_URL: postgresql://deckhand:change-me@postgres:5432/deckhand?schema=public
       NODE_ENV: production
       PORT: 3000
-      CORS_ORIGIN: ${CORS_ORIGIN:-https://localhost}
-      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-}
-      BETTER_AUTH_URL: ${BETTER_AUTH_URL:-https://localhost}
+      BETTER_AUTH_SECRET: change-me
+      BETTER_AUTH_URL: https://example.com
+    ports:
+      - "127.0.0.1:3001:3000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -58,11 +65,11 @@ services:
       start_period: 20s
 
   web:
-    image: ${DOCKERHUB_USER:-epitexam}/deckhand-web:${DECKHAND_VERSION:-latest}
+    image: epitexam/deckhand-web:0.1.2
     restart: unless-stopped
     init: true
-    cpus: ${WEB_CPUS:-1.0}
-    mem_limit: ${WEB_MEM:-512m}
+    cpus: 1.0
+    mem_limit: 512m
     security_opt:
       - no-new-privileges:true
     logging:
@@ -71,12 +78,12 @@ services:
         max-size: "10m"
         max-file: "3"
     environment:
-      HOST: 0.0.0.0
-      PORT: 3000
-      ORIGIN: ${ORIGIN:-https://localhost}
+      ORIGIN: https://example.com
       API_INTERNAL_URL: http://api:3000
       PROTOCOL_HEADER: x-forwarded-proto
       HOST_HEADER: x-forwarded-host
+    ports:
+      - "127.0.0.1:3000:3000"
     depends_on:
       api:
         condition: service_healthy
@@ -94,6 +101,7 @@ services:
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
+    profiles: ["proxy"]
     init: true
     security_opt:
       - no-new-privileges:true
@@ -103,12 +111,15 @@ services:
         max-size: "10m"
         max-file: "3"
     environment:
-      DOMAIN: ${DOMAIN:-localhost}
+      DOMAIN: example.com
     ports:
       - "80:80"
       - "443:443"
+      - "443:443/udp"
+    configs:
+      - source: caddyfile
+        target: /etc/caddy/Caddyfile
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
@@ -116,6 +127,20 @@ services:
         condition: service_healthy
       web:
         condition: service_healthy
+
+# `$$` is a Compose escape: Caddy receives {$DOMAIN:localhost}.
+configs:
+  caddyfile:
+    content: |
+      {$$DOMAIN:localhost} {
+        handle_path /api/* {
+          reverse_proxy api:3000
+        }
+
+        handle {
+          reverse_proxy web:3000
+        }
+      }
 
 volumes:
   postgres_data:

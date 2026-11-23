@@ -40,7 +40,7 @@ flowchart LR
     W -.->|"SSR · API_INTERNAL_URL"| A
 ```
 
-The browser always calls the API on the **same origin** — no CORS setup. During SSR, the web server reaches the API directly over the Docker network.
+The browser always calls the API on the **same origin** — no CORS setup. Caddy is optional; without it, the web service proxies `/api` itself. During SSR, the web server reaches the API directly over the Docker network.
 
 ### Type flow
 
@@ -70,9 +70,15 @@ docs/DEPLOYMENT.md    # VPS hardening notes
 
 ## Get started
 
+Download the single stack file, edit the database password and public URL, then start it:
+
 ```bash
+curl -fsSLO https://github.com/Deckhandhq/deckhand/releases/latest/download/docker-compose.yml
+$EDITOR docker-compose.yml
 docker compose up -d
 ```
+
+Caddy is optional: `docker compose --profile proxy up -d` enables the recommended HTTPS reverse proxy. Without it, point your own HAProxy/Nginx at `127.0.0.1:3000` — the app proxies `/api` itself.
 
 Full prerequisites, configuration and operations are in the [documentation site](https://deckhandhq.github.io/deckhand-docs/). Developers can jump to [`AGENTS.md`](AGENTS.md) for local commands and conventions.
 
