@@ -9,7 +9,10 @@
 ```bash
 mkdir deckhand && cd deckhand
 BASE=https://github.com/Deckhandhq/deckhand/releases/latest/download
-for f in docker-compose.yml .env.example Caddyfile; do curl -fsSLO "$BASE/$f"; done
+for f in docker-compose.yml .env.example Caddyfile DEPLOYMENT.md backup.sh restore.sh update.sh; do
+  curl -fsSLO "$BASE/$f"
+done
+chmod +x backup.sh restore.sh update.sh
 cp .env.example .env
 $EDITOR .env      # DOMAIN, POSTGRES_PASSWORD, BETTER_AUTH_SECRET, DECKHAND_VERSION
 docker compose up -d

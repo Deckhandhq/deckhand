@@ -90,6 +90,10 @@ jobs:
             docker-compose.yml
             .env.example
             Caddyfile
+            docs/DEPLOYMENT.md
+            scripts/backup.sh
+            scripts/restore.sh
+            scripts/update.sh
 
   smoke:
     needs: publish
