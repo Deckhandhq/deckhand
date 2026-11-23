@@ -1,0 +1,40 @@
+{
+  "name": "deckhand",
+  "private": true,
+  "type": "module",
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ]
+  },
+  "catalog": {
+    "elysia": "1.4.32",
+    "@elysia/eden": "1.4.10",
+    "@elysia/openapi": "1.4.17",
+    "typescript": "6.0.3",
+    "@types/bun": "1.4.5",
+    "prisma": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "@prisma/adapter-pg": "7.10.1"
+  },
+  "scripts": {
+    "predev": "bun run --filter @deckhand/database db:generate",
+    "dev": "bun run --parallel --filter @deckhand/api --filter @deckhand/web dev",
+    "build": "bun run --filter @deckhand/api build && bun run --filter @deckhand/web build",
+    "start": "bun run --parallel --filter @deckhand/api --filter @deckhand/web start",
+    "test": "bun test",
+    "typecheck": "bun check . && bun run --filter @deckhand/web check",
+    "fmt": "bun fmt --no-script",
+    "fmt:check": "bun fmt --no-script --check",
+    "db:generate": "bun run --filter @deckhand/database db:generate",
+    "db:migrate": "bun run --filter @deckhand/database db:migrate",
+    "db:deploy": "bun run --filter @deckhand/database db:deploy",
+    "db:seed": "bun run --filter @deckhand/database db:seed",
+    "studio": "bun run --filter @deckhand/database db:studio"
+  },
+  "devDependencies": {
+    "@types/bun": "catalog:",
+    "typescript": "catalog:"
+  }
+}

@@ -1,0 +1,9 @@
+node_modules
+.agents
+.opencode
+apps/*/build
+apps/*/.svelte-kit
+apps/*/storybook-static
+packages/database/src/generated
+*.log
+bun.lock

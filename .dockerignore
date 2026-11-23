@@ -1,0 +1,12 @@
+node_modules
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+*.log
+coverage
+apps/*/build
+apps/*/.svelte-kit
+packages/*/dist
+.DS_Store

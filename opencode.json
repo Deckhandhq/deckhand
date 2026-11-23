@@ -1,0 +1,16 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["@sveltejs/opencode"],
+  "mcp": {
+    "servers": {
+      "prisma": {
+        "type": "remote",
+        "url": "https://mcp.prisma.io/mcp"
+      },
+      "svelte-devtools": {
+        "type": "local",
+        "command": ["bunx", "@sveltejs/vite-devtools-svelte", "mcp"]
+      }
+    }
+  }
+}

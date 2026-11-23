@@ -1,0 +1,24 @@
+{
+  "name": "@deckhand/api",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./app": "./src/app.ts"
+  },
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "start": "bun src/index.ts",
+    "build": "bun build --compile --minify-whitespace --minify-syntax --target bun --outfile dist/server src/index.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@deckhand/database": "workspace:*",
+    "@elysia/openapi": "catalog:",
+    "@opuu/elysia-llms-txt": "1.1.0",
+    "elysia": "catalog:"
+  },
+  "devDependencies": {
+    "@elysia/eden": "catalog:",
+    "@types/bun": "catalog:"
+  }
+}
