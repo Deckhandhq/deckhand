@@ -13,7 +13,7 @@ curl -fsS https://<domain>/api/health
 Expected response:
 
 ```json
-{"status":"ok"}
+{ "status": "ok" }
 ```
 
 The API container also has an internal health check against `http://localhost:3000/health`, and the web container checks `/`. Docker Compose waits for the database to be healthy before starting the API, and for the API before starting the web service.

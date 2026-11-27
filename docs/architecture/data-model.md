@@ -8,15 +8,15 @@ The schema is intentionally minimal. It defines a foundation aligned with a futu
 
 `packages/database/prisma/schema.prisma` defines one model.
 
-| Field | Type | Notes |
-|---|---|---|
-| `id` | `String` | Primary key, `cuid()` by default |
-| `name` | `String` | Required |
-| `email` | `String` | Unique |
-| `emailVerified` | `Boolean` | Defaults to `false` |
-| `image` | `String?` | Optional |
-| `createdAt` | `DateTime` | Defaults to the current time |
-| `updatedAt` | `DateTime` | Maintained by Prisma |
+| Field           | Type       | Notes                            |
+| --------------- | ---------- | -------------------------------- |
+| `id`            | `String`   | Primary key, `cuid()` by default |
+| `name`          | `String`   | Required                         |
+| `email`         | `String`   | Unique                           |
+| `emailVerified` | `Boolean`  | Defaults to `false`              |
+| `image`         | `String?`  | Optional                         |
+| `createdAt`     | `DateTime` | Defaults to the current time     |
+| `updatedAt`     | `DateTime` | Maintained by Prisma             |
 
 ```prisma
 model User {
@@ -34,10 +34,10 @@ model User {
 
 ## Generators
 
-| Generator | Provider | Output |
-|---|---|---|
-| `client` | `prisma-client` | `packages/database/src/generated/prisma` |
-| `prismabox` | `prismabox` | `packages/database/src/generated/prismabox` |
+| Generator   | Provider        | Output                                      |
+| ----------- | --------------- | ------------------------------------------- |
+| `client`    | `prisma-client` | `packages/database/src/generated/prisma`    |
+| `prismabox` | `prismabox`     | `packages/database/src/generated/prismabox` |
 
 The Prismabox generator uses `t` from Elysia as its TypeBox import, which is why validation models are directly usable in routes. Run `bun run db:generate` after a schema change; see [Type flow](type-flow.md).
 
@@ -45,13 +45,13 @@ The Prismabox generator uses `t` from Elysia as its TypeBox import, which is why
 
 Migrations live in `packages/database/prisma/migrations`. The initial migration is present. Commands are exposed at the workspace root and go through `bunx --bun prisma`:
 
-| Command | Effect |
-|---|---|
-| `bun run db:generate` | Regenerate client and validation models |
-| `bun run db:migrate` | Create and apply a development migration |
-| `bun run db:deploy` | Apply pending migrations, for deployment |
-| `bun run db:seed` | Run the seed script |
-| `bun run studio` | Open Prisma Studio |
+| Command               | Effect                                   |
+| --------------------- | ---------------------------------------- |
+| `bun run db:generate` | Regenerate client and validation models  |
+| `bun run db:migrate`  | Create and apply a development migration |
+| `bun run db:deploy`   | Apply pending migrations, for deployment |
+| `bun run db:seed`     | Run the seed script                      |
+| `bun run studio`      | Open Prisma Studio                       |
 
 `packages/database/prisma.config.ts` loads the root `.env` explicitly, because the Prisma CLI does not do it on its own. Variables already present in the environment, such as those from Docker Compose or CI, are not overridden. The datasource URL reads `process.env.DATABASE_URL` directly, so `prisma generate` still works when no database is configured.
 

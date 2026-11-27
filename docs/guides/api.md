@@ -4,12 +4,12 @@
 
 ## Endpoints
 
-| Endpoint | Purpose |
-|---|---|
-| `GET /health` | Health check returning `{ "status": "ok" }` |
-| `/openapi` | Scalar UI generated from the OpenAPI document |
-| `/openapi/json` | The OpenAPI document itself |
-| `/llms.txt` | Agent-oriented documentation generated from `/openapi/json`, with caching enabled |
+| Endpoint        | Purpose                                                                           |
+| --------------- | --------------------------------------------------------------------------------- |
+| `GET /health`   | Health check returning `{ "status": "ok" }`                                       |
+| `/openapi`      | Scalar UI generated from the OpenAPI document                                     |
+| `/openapi/json` | The OpenAPI document itself                                                       |
+| `/llms.txt`     | Agent-oriented documentation generated from `/openapi/json`, with caching enabled |
 
 Authentication will be mounted at `/api/auth` when Better Auth is implemented; see the [Roadmap](../product/roadmap.md).
 
@@ -30,11 +30,11 @@ export const health = new Elysia({ name: "health", prefix: "/health" }).get(
 
 The shared error plugin returns a consistent shape.
 
-| Condition | Status | Body |
-|---|---|---|
-| Validation failure | 422 | `{ "error": "Validation failed", "details": "..." }` |
-| Unknown route | 404 | `{ "error": "Not found" }` |
-| Unexpected error | 500 | `{ "error": "Internal server error" }` |
+| Condition          | Status | Body                                                 |
+| ------------------ | ------ | ---------------------------------------------------- |
+| Validation failure | 422    | `{ "error": "Validation failed", "details": "..." }` |
+| Unknown route      | 404    | `{ "error": "Not found" }`                           |
+| Unexpected error   | 500    | `{ "error": "Internal server error" }`               |
 
 Unexpected errors are logged server-side; clients never receive the raw message.
 
@@ -43,10 +43,10 @@ Unexpected errors are logged server-side; clients never receive the raw message.
 The frontend does not hand-write request URLs or response types. It creates an Eden client from `type App`:
 
 ```ts
-import type { App } from '@deckhand/api/app';
-import { treaty } from '@elysia/eden';
+import type { App } from "@deckhand/api/app";
+import { treaty } from "@elysia/eden";
 
-const api = treaty<App>('http://localhost:3000');
+const api = treaty<App>("http://localhost:3000");
 const { data, error } = await api.health.get();
 ```
 

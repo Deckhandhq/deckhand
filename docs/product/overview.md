@@ -6,13 +6,13 @@ Deckhand is a forum you can host yourself. It is built around a simple promise: 
 
 ## Positioning
 
-| Axis | Choice |
-|---|---|
-| Ownership | Runs on your own infrastructure; a single Docker Compose stack is the supported deployment |
-| Typing | Eden Treaty infers the API from `type App`; no client code generation |
-| Validation | Prismabox derives TypeBox models from the Prisma schema, reused by Elysia and OpenAPI |
-| Runtime | Bun everywhere: package manager, tests, type checker, formatter, bundler, and server |
-| Delivery | Multi-arch Docker images with pinned release tags |
+| Axis       | Choice                                                                                     |
+| ---------- | ------------------------------------------------------------------------------------------ |
+| Ownership  | Runs on your own infrastructure; a single Docker Compose stack is the supported deployment |
+| Typing     | Eden Treaty infers the API from `type App`; no client code generation                      |
+| Validation | Prismabox derives TypeBox models from the Prisma schema, reused by Elysia and OpenAPI      |
+| Runtime    | Bun everywhere: package manager, tests, type checker, formatter, bundler, and server       |
+| Delivery   | Multi-arch Docker images with pinned release tags                                          |
 
 ## Highlights
 

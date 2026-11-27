@@ -32,24 +32,24 @@ Without Caddy, point HAProxy or Nginx at `127.0.0.1:3000`; the web service proxi
 
 ## Stack configuration
 
-| Service | Host port | Notes |
-|---|---|---|
+| Service    | Host port        | Notes                                                  |
+| ---------- | ---------------- | ------------------------------------------------------ |
 | PostgreSQL | `127.0.0.1:5432` | Health check via `pg_isready`; data in `postgres_data` |
-| API | `127.0.0.1:3001` | Container port 3000; health check through `/health` |
-| Web | `127.0.0.1:3000` | Container port 3000; health check on `/` |
-| Caddy | 80, 443 | Optional, enabled by the `proxy` profile |
+| API        | `127.0.0.1:3001` | Container port 3000; health check through `/health`    |
+| Web        | `127.0.0.1:3000` | Container port 3000; health check on `/`               |
+| Caddy      | 80, 443          | Optional, enabled by the `proxy` profile               |
 
 Environment values to set in the compose file:
 
-| Variable | Service | Purpose |
-|---|---|---|
-| `POSTGRES_PASSWORD` | PostgreSQL | Long random value; avoid `@ / # : ?`, which break URL interpolation |
-| `DATABASE_URL` | API | Connection string to the `postgres` service |
-| `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL` | API | Reserved for planned authentication |
-| `ORIGIN` | Web | Public origin of the site |
-| `API_INTERNAL_URL` | Web | Internal API address, `http://api:3000` |
-| `PROTOCOL_HEADER`, `HOST_HEADER` | Web | Forwarded headers used behind a proxy |
-| `DOMAIN` | Caddy | Public hostname used for automatic TLS |
+| Variable                                | Service    | Purpose                                                             |
+| --------------------------------------- | ---------- | ------------------------------------------------------------------- |
+| `POSTGRES_PASSWORD`                     | PostgreSQL | Long random value; avoid `@ / # : ?`, which break URL interpolation |
+| `DATABASE_URL`                          | API        | Connection string to the `postgres` service                         |
+| `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL` | API        | Reserved for planned authentication                                 |
+| `ORIGIN`                                | Web        | Public origin of the site                                           |
+| `API_INTERNAL_URL`                      | Web        | Internal API address, `http://api:3000`                             |
+| `PROTOCOL_HEADER`, `HOST_HEADER`        | Web        | Forwarded headers used behind a proxy                               |
+| `DOMAIN`                                | Caddy      | Public hostname used for automatic TLS                              |
 
 > **Note** - The database, API and web services are bound to localhost ports. Caddy is optional. All services use `no-new-privileges`, `init: true` and rotating logs; API and web have CPU and memory limits. See [Monitoring](monitoring.md).
 

@@ -9,15 +9,15 @@ Deckhand pairs a modular Elysia and Prisma API with a SvelteKit frontend. It is 
 
 ## At a glance
 
-| | |
-|---|---|
-| Product | Self-hosted discussion forum |
-| Runtime and tooling | Bun 1.4: package manager, tests, type checker, formatter, bundler |
-| API | Elysia 1.4 with Prismabox validation, OpenAPI and `llms.txt` |
-| Database | PostgreSQL 17 with Prisma 7 and the `pg` driver adapter |
-| Frontend | SvelteKit 3, Svelte 5, `@sveltejs/adapter-bun` |
-| Hosting | Docker Compose, with optional Caddy for automatic TLS |
-| Maturity | Foundation in place: health check, typed client, minimal schema. Authentication and forum modules are planned. |
+|                     |                                                                                                                |
+| ------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Product             | Self-hosted discussion forum                                                                                   |
+| Runtime and tooling | Bun 1.4: package manager, tests, type checker, formatter, bundler                                              |
+| API                 | Elysia 1.4 with Prismabox validation, OpenAPI and `llms.txt`                                                   |
+| Database            | PostgreSQL 17 with Prisma 7 and the `pg` driver adapter                                                        |
+| Frontend            | SvelteKit 3, Svelte 5, `@sveltejs/adapter-bun`                                                                 |
+| Hosting             | Docker Compose, with optional Caddy for automatic TLS                                                          |
+| Maturity            | Foundation in place: health check, typed client, minimal schema. Authentication and forum modules are planned. |
 
 ## System context
 
@@ -36,21 +36,21 @@ The browser always calls the API on the same origin, so there is no CORS setup. 
 
 This README is the entry point. All detail lives in a self-contained documentation set under [`docs/`](docs/README.md).
 
-| Area | Document | Covers |
-|---|---|---|
-| Product | [Overview](docs/product/overview.md) | Positioning, highlights, current scope |
-| Product | [Roadmap](docs/product/roadmap.md) | Planned auth, forum and tooling work |
-| Architecture | [Overview](docs/architecture/overview.md) | Stack, request paths, services |
-| Architecture | [Type flow](docs/architecture/type-flow.md) | Prisma schema through Prismabox to Eden |
-| Architecture | [Services](docs/architecture/services.md) | API modules, errors, database package, typed client |
-| Architecture | [Data model](docs/architecture/data-model.md) | Schema, generators, migrations, seed |
-| Guides | [Getting started](docs/guides/getting-started.md) | Local development and commands |
-| Guides | [API](docs/guides/api.md) | Endpoints, error format, typed client |
-| Operations | [Deployment](docs/operations/deployment.md) | VPS checklist and hardening |
-| Operations | [Backups](docs/operations/backups.md) | Backup, restore, update scripts |
-| Operations | [Monitoring](docs/operations/monitoring.md) | Health probe, logs, troubleshooting |
-| Reference | [Conventions](docs/reference/conventions.md) | Rules for API, Elysia, Prisma and the typed client |
-| Reference | [Repository layout](docs/reference/repository-layout.md) | Annotated source tree |
+| Area         | Document                                                 | Covers                                              |
+| ------------ | -------------------------------------------------------- | --------------------------------------------------- |
+| Product      | [Overview](docs/product/overview.md)                     | Positioning, highlights, current scope              |
+| Product      | [Roadmap](docs/product/roadmap.md)                       | Planned auth, forum and tooling work                |
+| Architecture | [Overview](docs/architecture/overview.md)                | Stack, request paths, services                      |
+| Architecture | [Type flow](docs/architecture/type-flow.md)              | Prisma schema through Prismabox to Eden             |
+| Architecture | [Services](docs/architecture/services.md)                | API modules, errors, database package, typed client |
+| Architecture | [Data model](docs/architecture/data-model.md)            | Schema, generators, migrations, seed                |
+| Guides       | [Getting started](docs/guides/getting-started.md)        | Local development and commands                      |
+| Guides       | [API](docs/guides/api.md)                                | Endpoints, error format, typed client               |
+| Operations   | [Deployment](docs/operations/deployment.md)              | VPS checklist and hardening                         |
+| Operations   | [Backups](docs/operations/backups.md)                    | Backup, restore, update scripts                     |
+| Operations   | [Monitoring](docs/operations/monitoring.md)              | Health probe, logs, troubleshooting                 |
+| Reference    | [Conventions](docs/reference/conventions.md)             | Rules for API, Elysia, Prisma and the typed client  |
+| Reference    | [Repository layout](docs/reference/repository-layout.md) | Annotated source tree                               |
 
 ## Run it
 

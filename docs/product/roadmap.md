@@ -15,11 +15,11 @@ Better Auth belongs on the API side, with `@better-auth/prisma-adapter`. The han
 
 ## What the roadmap implies for the code
 
-| Item | Area it touches |
-|---|---|
-| Better Auth | API module, Prisma schema, generated client, typed client paths |
-| Forum module | New Elysia modules under `apps/api/src/modules`, Prismabox models, new routes |
-| Playwright and Storybook in CI | Existing web test and Storybook configuration |
-| OpenTelemetry | API lifecycle hooks and deployment configuration |
+| Item                           | Area it touches                                                               |
+| ------------------------------ | ----------------------------------------------------------------------------- |
+| Better Auth                    | API module, Prisma schema, generated client, typed client paths               |
+| Forum module                   | New Elysia modules under `apps/api/src/modules`, Prismabox models, new routes |
+| Playwright and Storybook in CI | Existing web test and Storybook configuration                                 |
+| OpenTelemetry                  | API lifecycle hooks and deployment configuration                              |
 
 > **Note** - The health endpoint and the typed client are already in place, so the first two items can build on them. See [Services](../architecture/services.md) and [API](../guides/api.md).

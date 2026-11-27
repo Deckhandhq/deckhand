@@ -6,18 +6,18 @@ This directory is a self-contained documentation set for Deckhand. It covers the
 
 ## Start here
 
-| Goal | Read |
-|---|---|
-| Understand what Deckhand is | [Product overview](product/overview.md) |
-| Host it on a VPS | [Deployment](operations/deployment.md) |
-| Back up or restore an instance | [Backups](operations/backups.md), [Monitoring](operations/monitoring.md) |
-| Develop locally | [Getting started](guides/getting-started.md) |
-| Understand a request from browser to database | [Architecture overview](architecture/overview.md) |
-| Change the Prisma schema | [Data model](architecture/data-model.md), [Type flow](architecture/type-flow.md) |
-| Add an API route or an Elysia module | [Services](architecture/services.md), [Conventions](reference/conventions.md) |
-| Call the API from SvelteKit | [Type flow](architecture/type-flow.md), [Services](architecture/services.md) |
-| Navigate the source tree | [Repository layout](reference/repository-layout.md) |
-| See what is planned | [Roadmap](product/roadmap.md) |
+| Goal                                          | Read                                                                             |
+| --------------------------------------------- | -------------------------------------------------------------------------------- |
+| Understand what Deckhand is                   | [Product overview](product/overview.md)                                          |
+| Host it on a VPS                              | [Deployment](operations/deployment.md)                                           |
+| Back up or restore an instance                | [Backups](operations/backups.md), [Monitoring](operations/monitoring.md)         |
+| Develop locally                               | [Getting started](guides/getting-started.md)                                     |
+| Understand a request from browser to database | [Architecture overview](architecture/overview.md)                                |
+| Change the Prisma schema                      | [Data model](architecture/data-model.md), [Type flow](architecture/type-flow.md) |
+| Add an API route or an Elysia module          | [Services](architecture/services.md), [Conventions](reference/conventions.md)    |
+| Call the API from SvelteKit                   | [Type flow](architecture/type-flow.md), [Services](architecture/services.md)     |
+| Navigate the source tree                      | [Repository layout](reference/repository-layout.md)                              |
+| See what is planned                           | [Roadmap](product/roadmap.md)                                                    |
 
 ## Product
 

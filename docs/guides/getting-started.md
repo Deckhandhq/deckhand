@@ -17,12 +17,12 @@ cp .env.example .env
 
 Development environment variables:
 
-| Variable | Purpose |
-|---|---|
+| Variable       | Purpose                                            |
+| -------------- | -------------------------------------------------- |
 | `DATABASE_URL` | PostgreSQL connection string, including the schema |
-| `NODE_ENV` | `development` by default |
-| `PORT` | API port, 3000 by default |
-| `CORS_ORIGIN` | Frontend origin for development |
+| `NODE_ENV`     | `development` by default                           |
+| `PORT`         | API port, 3000 by default                          |
+| `CORS_ORIGIN`  | Frontend origin for development                    |
 
 Production configuration lives in `docker-compose.yml`, not in `.env`. See [Deployment](../operations/deployment.md).
 
@@ -39,19 +39,19 @@ bun run dev
 
 Always run commands through Bun.
 
-| Command | Description |
-|---|---|
-| `bun install` | Install all workspaces from `bun.lock` |
-| `bun run dev` | Run API and web in parallel; regenerates the Prisma client first |
-| `bun run build` / `bun run start` | Build / start the project |
-| `bun run db:generate` | Generate the Prisma client and Prismabox models |
-| `bun run db:migrate` | Create and apply a migration |
-| `bun run db:deploy` | Apply pending migrations |
-| `bun run db:seed` | Seed the database with reference data |
-| `bun run studio` | Open Prisma Studio |
-| `bun test` | Run the test suite |
-| `bun run typecheck` | Type-check Bun code and SvelteKit code |
-| `bun run fmt` / `bun run fmt:check` | Format code / check formatting |
+| Command                             | Description                                                      |
+| ----------------------------------- | ---------------------------------------------------------------- |
+| `bun install`                       | Install all workspaces from `bun.lock`                           |
+| `bun run dev`                       | Run API and web in parallel; regenerates the Prisma client first |
+| `bun run build` / `bun run start`   | Build / start the project                                        |
+| `bun run db:generate`               | Generate the Prisma client and Prismabox models                  |
+| `bun run db:migrate`                | Create and apply a migration                                     |
+| `bun run db:deploy`                 | Apply pending migrations                                         |
+| `bun run db:seed`                   | Seed the database with reference data                            |
+| `bun run studio`                    | Open Prisma Studio                                               |
+| `bun test`                          | Run the test suite                                               |
+| `bun run typecheck`                 | Type-check Bun code and SvelteKit code                           |
+| `bun run fmt` / `bun run fmt:check` | Format code / check formatting                                   |
 
 Target a single workspace with a filter:
 

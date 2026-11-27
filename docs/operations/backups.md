@@ -20,10 +20,10 @@ cd /path/to/deckhand && chmod +x backup.sh restore.sh update.sh
 
 The script writes `backups/<timestamp>/` containing:
 
-| File | Contents |
-|---|---|
-| `db.dump` | Custom-format PostgreSQL dump from `pg_dump -Fc` |
-| `caddy_data.tar.gz` | The `caddy_data` volume, when present |
+| File                | Contents                                         |
+| ------------------- | ------------------------------------------------ |
+| `db.dump`           | Custom-format PostgreSQL dump from `pg_dump -Fc` |
+| `caddy_data.tar.gz` | The `caddy_data` volume, when present            |
 
 It reads `POSTGRES_USER`, `POSTGRES_DB` and `COMPOSE_PROJECT_NAME` from the environment, with defaults of `deckhand`. Schedule it with cron or a systemd timer.
 
